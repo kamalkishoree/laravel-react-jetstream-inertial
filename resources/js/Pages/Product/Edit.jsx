@@ -12,7 +12,7 @@ export default function Dashboard(props) {
   
     function handleSubmit(e) {
         e.preventDefault();
-        put(route("product.update", post.id));
+        put(route("product.update", product.id));
     }
   
     return (
