@@ -5,6 +5,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +19,6 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('product', ProductController::class)->middleware('auth');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -35,6 +37,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('student-subjects/{id}',[StudentController::class, 'getStudentSubjects'])->name('student-subjects');
+    Route::get('student-search/{text}',[StudentController::class, 'getSearchStudent'])->name('student-search');
+
+
 });
+
+
+    Route::resource('product', ProductController::class)->middleware('auth');
+    Route::resource('subject', SubjectController::class)->middleware('auth');
+    Route::resource('teacher', TeacherController::class)->middleware('auth');
+    Route::resource('student', StudentController::class)->middleware('auth');
+
+
+
 
 require __DIR__.'/auth.php';
