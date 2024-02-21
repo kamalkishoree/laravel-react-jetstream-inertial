@@ -43,7 +43,6 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-
         try {
             $Student = new Student();
             $Student->name = $request->name;
@@ -84,8 +83,7 @@ class StudentController extends Controller
         $subjects = Subject::all();
         return Inertia::render('Student/Edit', [
             'subjects' => $subjects,
-            'student' => $Student,
-
+            'student' => $Student
         ]);
     }
 
@@ -110,7 +108,7 @@ class StudentController extends Controller
 
     public function getStudentSubjects($id)
     {
-      $data = [];
+        $data = [];
         $student = Student::find($id);
         if ($student) {
             $ids = $student->subject_id;
@@ -128,20 +126,25 @@ class StudentController extends Controller
                 }
             }
         }
-//       $user_id = 1;
 
-//       $teachers = Teacher::whereHas('subjects.students', function ($query) use ($user_id) {
-//           $query->where('students.id', $user_id);
-//       })->with(['subjects' => function ($query) use ($user_id) {
-//           $query->whereHas('students', function ($query) use ($user_id) {
-//               $query->where('students.id', $user_id);
-//           });
-//       }])->get();
-
-//       return print_r($teachers);
-//       die;
         return Inertia::render('Student/StudentSubjects', [
             'data' => $data
         ]);
+    }
+
+    public function optimizeStudentSubject($user_id)
+    {
+        $user_id = 1;
+        $teachers = Teacher::whereHas('subjects.students', function ($query) use ($user_id) {
+            $query->where('students.id', $user_id);
+        })->with([
+            'subjects' => function ($query) use ($user_id) {
+                $query->whereHas('students', function ($query) use ($user_id) {
+                    $query->where('students.id', $user_id);
+                });
+            }
+        ])
+            ->get();
+        return print_r($teachers);
     }
 }
