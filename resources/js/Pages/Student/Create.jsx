@@ -48,14 +48,17 @@ export default function Dashboard(props) {
 	const [validationError, setValidationError] = useState({});
 	const [teacherData, setTeacherData] = useState([]);
 	const [subjectData, setSubjectData] = useState([]);
+	const all_subject = selectedSubject.map((item) => item.value);
+	const SubjectOptions = subjects.map(({ id, name }) => ({
+		value: id,
+		label: name,
+	}));
 
 	const handleSelectedClass = (selectedClass) => {
 		const newSelectedClass = selectedClass.value;
 		console.log(newSelectedClass);
 		setselectedClass(newSelectedClass);
 		setData("class", newSelectedClass);
-
-
 	};
 
 	const handleChangeSex = (SelectedSex) => {
@@ -64,25 +67,15 @@ export default function Dashboard(props) {
 		setData("sex", newSex.value);
 
 	};
-
-
-	const SubjectOptions = subjects.map(({ id, name }) => ({
-		value: id,
-		label: name,
-	}));
-	console.log(selectedSubject);
-	const all_subject = selectedSubject.map((item) => item.value);
-	
 	const handleSelectedSubject = (e) => {
 		const newSubject = e;
 		setselectedSubject(newSubject);
-		setData("subject_id",all_subject)
+		setData("subject_id", all_subject)
 	};
 
-	const handleSelectedTeachers = (selectedteachers) => {
-		const newTeacher = selectedteachers;
-		setSelectedTeachers(newTeacher);
-	};
+	console.log(all_subject);
+
+
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -190,6 +183,6 @@ export default function Dashboard(props) {
 				</div>
 			</div>
 		</AuthenticatedLayout>
-	);      }
+	);}
 
 

@@ -18,7 +18,7 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teachers = Teacher::all();
+        $teachers = Teacher::paginate(5);
 
         return Inertia::render('Teacher/index', [
             'teachers' => $teachers
@@ -41,12 +41,6 @@ class TeacherController extends Controller
      */
     public function store(StoreTeacherRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'age' => 'required',
-            'sex' => 'required'
-            // 'image' => 'required|image'
-        ]);
 
         try {
 

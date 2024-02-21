@@ -7,15 +7,17 @@ import Select from "react-select";
 
 export default function Dashboard(props) {
 
-	const { subjects } = props;
-	const { data, setData, errors, post } = useForm({
-		name: "",
-		age: "",
-		sex: "",
-		class: "",
-		roll_no: "",
-		teacher_id: "",
-		subject_id: "",
+	const { subjects ,student} = props;
+	
+	console.log(student);
+	
+	const { data, setData, errors, put } = useForm({
+		name: student.name||"",
+		age:student.age|| "",
+		sex: student.sex||"",
+		class:student.class|| "",
+		roll_no:student.roll_no|| "",
+		subject_id: student.subject_id||"",
 	});
 
 	const classOptions = [
@@ -38,23 +40,16 @@ export default function Dashboard(props) {
 		{ value: "Other", label: "Other" },
 	];
 
-	const [studentName, setStudentName] = useState("");
-	const [StduentRoleNo, setStduentRoleNo] = useState([]);
-	const [StduentAge, setStduentAge] = useState("");
 	const [selectedClass, setselectedClass] = useState("");
-	const [selectedTeachers, setSelectedTeachers] = useState([]);
 	const [selectedSubject, setselectedSubject] = useState([]);
 	const [SelectedSex, setSelectSex] = useState("");
-	const [validationError, setValidationError] = useState({});
-	const [teacherData, setTeacherData] = useState([]);
-	const [subjectData, setSubjectData] = useState([]);
 
 	const handleSelectedClass = (selectedClass) => {
 		const newSelectedClass = selectedClass.value;
 		console.log(newSelectedClass);
 		setselectedClass(newSelectedClass);
 		setData("class", newSelectedClass);
-		
+
 
 	};
 
@@ -70,22 +65,18 @@ export default function Dashboard(props) {
 		value: id,
 		label: name,
 	}));
-
-	const all_subject = selectedSubject.map((item) => item.value);
-	const all_teachers = selectedTeachers.map((item) => item.value);
-
-	const handleSelectedSubject = (selectedSubject) => {
-		const newSubject = selectedSubject;
+	console.log(selectedSubject);
+	const all_subject = subjects.map((item) => item.value);
+	
+	const handleSelectedSubject = (e) => {
+		const newSubject = e;
 		setselectedSubject(newSubject);
-		setData('subject_id',all_subject);
+		setData("subject_id",all_subject)
 	};
-	const handleSelectedTeachers = (selectedteachers) => {
-		const newTeacher = selectedteachers;
-		setSelectedTeachers(newTeacher);
-	};
+
 	function handleSubmit(e) {
 		e.preventDefault();
-		post(route("student.store"));
+		put(route("student.update"));
 	}
 
 	return (
@@ -96,7 +87,9 @@ export default function Dashboard(props) {
 					<div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 						<div className="p-6 bg-white border-b border-gray-200">
 							<div className="flex items-center justify-between mb-6">
-								<Link className="px-6 py-2 text-white bg-blue-500 rounded-md focus:outline-none" href={route("student.index")}>Back</Link>
+								<Link className="px-6 py-2 text-white bg-blue-500 rounded-md focus:outline-none" href={route("subject.index")}>Back</Link>
+
+
 							</div>
 
 							<form name="createForm" onSubmit={handleSubmit}>
@@ -164,11 +157,11 @@ export default function Dashboard(props) {
 									<div className="mb-0">
 										<label className="">Subjects</label>
 
-										<Select
+										<Select name="subject_id"
 											options={SubjectOptions}
 											value={selectedSubject}
 											isMulti
-											onChange={handleSelectedSubject}
+											onChange={(e) => handleSelectedSubject(e)}
 											placeholder="Select Class "
 										/>
 										<span className="text-red-600">
@@ -182,11 +175,12 @@ export default function Dashboard(props) {
 								</div>
 							</form>
 
-
 						</div>
 					</div>
 				</div>
 			</div>
 		</AuthenticatedLayout>
 	);
-}
+      }
+
+

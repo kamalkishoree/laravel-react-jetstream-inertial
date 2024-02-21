@@ -36,9 +36,9 @@ class ProductController extends Controller
             'name' => ['required'],
             'description' => ['required'],
         ])->validate();
-   
+
         Product::create($request->all());
-    
+
         return redirect()->route('product.index');
     }
 

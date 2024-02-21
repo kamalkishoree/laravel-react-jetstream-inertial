@@ -1,14 +1,16 @@
+import Pagination from '@/Components/Pagination';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage, Link, router } from '@inertiajs/react';
 
 export default function Dashboard(props) {
 	const { teachers } = usePage().props
+	console.log(teachers);
 	function destroy(e) {
 		if (confirm("Are you sure you want to delete this product?")) {
 			router.delete(route("teacher.destroy", e.currentTarget.id));
 		}
 	}
-	
+
 	return (
 		<AuthenticatedLayout auth={props.auth} user={props.auth.user} errors={props.errors} header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">subjects</h2>}>
 			<Head title="Posts" />
@@ -30,7 +32,7 @@ export default function Dashboard(props) {
 									</tr>
 								</thead>
 								<tbody>
-									{teachers && teachers.map((item) => (
+									{teachers && teachers.data.map((item) => (
 										<tr key={item.id}>
 											<td className="border px-4 py-2">{item.id}</td>
 											<td className="border px-4 py-2">{item.name}</td>
@@ -42,13 +44,15 @@ export default function Dashboard(props) {
 											</td>
 										</tr>
 									))}
-									{teachers.length === 0 && (
+									{teachers.data.length === 0 && (
 										<tr>
 											<td className="px-6 py-4 border-t" colSpan="4">No Teachers found.</td>
 										</tr>
 									)}
 								</tbody>
 							</table>
+							<Pagination class="mt-6" links={teachers.links} />
+
 						</div>
 					</div>
 				</div>

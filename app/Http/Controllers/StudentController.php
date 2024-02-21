@@ -18,7 +18,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::all();
+        $students = Student::paginate(5);
         $subjects = Subject::all();
         return Inertia::render('Student/index', [
             'students' => $students,
@@ -43,14 +43,6 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'age' => 'required',
-            'sex' => 'required',
-            'class' => 'required',
-            'subject_id' => 'required',
-            'roll_no' => 'required'
-        ]);
 
         try {
             $Student = new Student();
@@ -89,10 +81,11 @@ class StudentController extends Controller
 
     public function edit(Student $Student)
     {
-        $teachers = Teacher::all();
+        $subjects = Subject::all();
         return Inertia::render('Student/Edit', [
-            'Student' => $Student,
-            'teachers' => $teachers
+            'subjects' => $subjects,
+            'student' => $Student,
+
         ]);
     }
 
@@ -117,7 +110,7 @@ class StudentController extends Controller
 
     public function getStudentSubjects($id)
     {
-        $data = [];
+      $data = [];
         $student = Student::find($id);
         if ($student) {
             $ids = $student->subject_id;
@@ -135,6 +128,18 @@ class StudentController extends Controller
                 }
             }
         }
+//       $user_id = 1;
+
+//       $teachers = Teacher::whereHas('subjects.students', function ($query) use ($user_id) {
+//           $query->where('students.id', $user_id);
+//       })->with(['subjects' => function ($query) use ($user_id) {
+//           $query->whereHas('students', function ($query) use ($user_id) {
+//               $query->where('students.id', $user_id);
+//           });
+//       }])->get();
+
+//       return print_r($teachers);
+//       die;
         return Inertia::render('Student/StudentSubjects', [
             'data' => $data
         ]);

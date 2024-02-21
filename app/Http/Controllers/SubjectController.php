@@ -17,7 +17,7 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $Subjects = Subject::all();
+        $Subjects = Subject::paginate(5);
         $teachers = Teacher::all();
         return Inertia::render('Subject/index', [
             'subjects' => $Subjects,
@@ -43,14 +43,6 @@ class SubjectController extends Controller
     public function store(StoreSubjectRequest $request)
     {
 
-        $request->validate([
-            'name' => 'required',
-            'class' => 'required',
-            'language' => 'required',
-            'teacher_id' => 'required'
-
-            // 'image' => 'required|image'
-        ]);
         try {
             $Subject = new Subject();
             $Subject->name = $request->name;

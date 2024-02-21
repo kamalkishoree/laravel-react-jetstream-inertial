@@ -15,4 +15,9 @@ class Subject extends Model
         'class',
         'language'
     ];
+
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class, 'teacher_subject', 'subject_id', 'teacher_id');
+    }
 }

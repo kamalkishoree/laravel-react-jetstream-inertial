@@ -2,8 +2,11 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage, Link, router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import $ from 'jquery';
+import Pagination from '@/Components/Pagination';
 export default function Dashboard(props) {
 	const { students } = usePage().props
+	console.log(students);
+	
 	function destroy(e) {
 		if (confirm("Are you sure you want to delete this product?")) {
 			router.delete(route("student.destroy", e.currentTarget.id));
@@ -52,7 +55,7 @@ export default function Dashboard(props) {
 									</tr>
 								</thead>
 								<tbody>
-									{students && students.map((item) => (
+									{students && students.data.map((item) => (
 										<tr key={item.id}>
 											<td className="border px-4 py-2">{item.id}</td>
 											<td className="border px-4 py-2">{item.name}</td>
@@ -74,8 +77,10 @@ export default function Dashboard(props) {
 											<td className="px-6 py-4 border-t" colSpan="4">No contacts found.</td>
 										</tr>
 									)}
+									
 								</tbody>
 							</table>
+                            <Pagination class="mt-6" links={students.links} />
 						</div>
 					</div>
 				</div>

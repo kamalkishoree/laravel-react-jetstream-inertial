@@ -15,4 +15,8 @@ class Teacher extends Model
         'age',
         'sex'
     ];
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class);
+    }
 }
